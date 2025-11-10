@@ -1,0 +1,48 @@
+#Grupo - Raví Fernandes, Tiago Ferreira, Pedro Gabriel e Emmily Gabriela
+#Bibliotecas usadas no trabalho
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#Tema - Acidentes Aéreos no Brasil/Gráfico Rosca
+#1 Dados Recolhidos da IATA (International Air Transport Association)
+data = {
+    'Ano': [2020, 2021, 2022, 2023, 2024],
+    'Fatalidades': [55, 60, 49, 77, 153]
+}
+df_fatalidades = pd.DataFrame(data)
+
+#2 Configurações
+tamanhos = df_fatalidades['Fatalidades']
+rotulos = df_fatalidades['Ano'].astype(str)
+total_fatalidades = tamanhos.sum()
+
+#Cores
+cores = ["#0099ff", "#0071ce", "#66f2f7", "#002fff", "#000CBB"]
+
+raio_externo = 1.2
+raio_interno = 0.7 
+
+texto_central = f"Total:\n{total_fatalidades} Fatalidades"
+
+#3 Gráfico Rosca
+fig, ax = plt.subplots(figsize=(10, 10))
+
+wedges, texts, autotexts = ax.pie(
+    tamanhos, 
+    labels=rotulos,
+    autopct=lambda p: f'{p:.1f}%\n({int(p * total_fatalidades / 100)})',
+    startangle=90,            
+    colors=cores,
+    pctdistance=0.75,        
+    radius=raio_externo,
+    wedgeprops=dict(width=raio_externo - raio_interno, edgecolor='w') 
+)
+
+plt.setp(autotexts, size=10, weight="bold", color="white")
+
+ax.text(0, 0, texto_central, ha='center', va='center', fontsize=18, color='k', weight='bold')
+
+ax.set_title('Percentual de Fatalidades Aéreas por Ano (2020-2024)', fontsize=16, pad=20)
+ax.axis('equal')
+
+plt.show()
